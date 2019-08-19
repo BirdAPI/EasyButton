@@ -1,14 +1,14 @@
-/**
- * EasyButtonTouch.cpp
- * @author Evert Arias, Gutierrez PS
- * @version 1.1.0
- * @license MIT
+/*
+ * @Author: Evert Arias, Gutierrez PS
+ * @Date: 2019-08-18 19:58:49 
+ * @Last Modified by: Evert Arias
+ * @Last Modified time: 2019-08-18 19:59:36
  */
 
 #if defined(ESP32)
 #include "EasyButtonTouch.h"
 
-void EasyButtonTouch::begin()
+void EasyButtonTouch::EasyButtonTouch()
 {
 	_current_state = _readPin();
 	_time = millis();
