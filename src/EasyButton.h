@@ -40,11 +40,13 @@ public:
 
 	~EasyButton() {}
 
-	bool read(read_method_t read_method = POLL); // Returns the current debounced button state, true for pressed, false for released
-	void update();								 // Update button pressed time, only needed when using interrupts
+	bool read();   // Returns the current debounced button state, true for pressed, false for released
+	void update(); // Update button pressed time, only needed when using interrupts
 
-	bool enableInterrupt();  // Enable interrupt
-	void disableInterrupt(); // Disable interrupt
+	bool enableInterrupt();									// Enable interrupt
+	void disableInterrupt();								// Disable interrupt
+	read_method_t setReadMethod(read_method_t read_method); // Set read method: INTERRUPT | POLL
+	read_method_t getReadMethod();							// Return current read method
 
 	void onPressed(callback_t callback);										// Call a callback function when the button has been pressed and released
 	void onPressedFor(uint32_t duration, callback_t callback);					// Call a callback function when the button has been held for at least the given number of milliseconds
@@ -74,6 +76,7 @@ private:
 	bool _changed;					   // Has the state change since last read
 	uint32_t _time;					   // Time of current state
 	uint32_t _last_change;			   // Time of last state change
+	read_method_t _read_method;
 
 	callback_t _pressed_callback;		   // Callback function for pressed events
 	callback_t _pressed_for_callback;	  // Callback function for pressedFor events
