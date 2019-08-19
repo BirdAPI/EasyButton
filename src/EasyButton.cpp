@@ -2,14 +2,14 @@
  * @Author: Evert Arias 
  * @Date: 2019-08-18 17:34:49 
  * @Last Modified by: Evert Arias
- * @Last Modified time: 2019-08-18 20:22:10
+ * @Last Modified time: 2019-08-18 22:24:56
  */
 
 #include "EasyButton.h"
 
 EasyButton::EasyButton(uint8_t pin, uint32_t debounce_time, bool pullup_enable, bool invert) : _pin(pin), _db_time(debounce_time), _invert(invert), _pu_enabled(pullup_enable)
 {
-	_read_method = POLL;
+	_read_method = POLL_METHOD;
 	pinMode(_pin, _pu_enabled ? INPUT_PULLUP : INPUT);
 	_current_state = _readPin();
 	if (_invert)
@@ -94,7 +94,7 @@ bool EasyButton::read()
 		// button released, reset _pressed_for_callbackCalled value
 		_held_callback_called = false;
 	}
-	else if (isPressed() && _read_method == POLL)
+	else if (isPressed() && _read_method == POLL_METHOD)
 	{
 		_checkPressedTime();
 	}
@@ -119,32 +119,32 @@ bool EasyButton::enableInterrupt()
 		return false;
 	}
 	attachInterrupt(digitalPinToInterrupt(_pin), std::bind(&EasyButton::read, this), CHANGE);
-	_read_method = INTERRUPT;
+	_read_method = INTERRUPT_METHOD;
 	return true;
 }
 
 void EasyButton::disableInterrupt()
 {
 	detachInterrupt(digitalPinToInterrupt(_pin));
-	_read_method = POLL;
+	_read_method = POLL_METHOD;
 }
 
 read_method_t EasyButton::setReadMethod(read_method_t read_method)
 {
-	if (read_method == INTERRUPT)
+	if (read_method == INTERRUPT_METHOD)
 	{
 		if (_supportsInterrupt())
 		{
 			attachInterrupt(digitalPinToInterrupt(_pin), std::bind(&EasyButton::read, this), CHANGE);
-			_read_method = INTERRUPT;
+			_read_method = INTERRUPT_METHOD;
 			return _read_method;
 		}
 	}
-	if (_read_method == INTERRUPT)
+	if (_read_method == INTERRUPT_METHOD)
 	{
 		detachInterrupt(digitalPinToInterrupt(_pin));
 	}
-	_read_method = POLL;
+	_read_method = POLL_METHOD;
 	return _read_method;
 }
 

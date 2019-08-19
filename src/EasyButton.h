@@ -2,7 +2,7 @@
  * @Author: Evert Arias 
  * @Date: 2019-08-18 17:34:40 
  * @Last Modified by: Evert Arias
- * @Last Modified time: 2019-08-18 20:21:59
+ * @Last Modified time: 2019-08-18 22:35:56
  */
 
 #ifndef _EasyButton_h
@@ -10,7 +10,7 @@
 
 #include <Arduino.h>
 
-#ifdef ESP8266
+#if defined(ESP8266) or defined(ESP32)
 #define EASYBUTTON_FUNCTIONAL_SUPPORT 1
 #endif
 
@@ -21,8 +21,8 @@
 
 enum read_method_t
 {
-	INTERRUPT,
-	POLL
+	INTERRUPT_METHOD,
+	POLL_METHOD
 };
 
 class EasyButton
